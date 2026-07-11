@@ -1,6 +1,9 @@
 import { useParams } from "react-router-dom";
 import { products, type ProductSlug } from "../../config/products";
+import { ThemeScope } from "../../theme/ThemeProvider";
+import { ReleasePanel } from "../../components/ReleasePanel/ReleasePanel";
 import { NotFound } from "../NotFound/NotFound";
+import "./ProductDownloadPage.css";
 
 export function ProductDownloadPage() {
   const { productSlug } = useParams<{ productSlug: ProductSlug }>();
@@ -11,9 +14,16 @@ export function ProductDownloadPage() {
   }
 
   return (
-    <main style={{ padding: "40px 24px", maxWidth: 1180, margin: "0 auto" }}>
-      <h1>{product.name} download</h1>
-      <p>Full release panel coming in Phase 6.</p>
-    </main>
+    <ThemeScope theme={product.theme} as="main" className="product-download-page">
+      <div className="product-download-hero">
+        <span className="product-download-eyebrow">{product.tagline}</span>
+        <h1>{product.name}</h1>
+        <p>{product.description}</p>
+      </div>
+
+      <div className="product-download-panel">
+        <ReleasePanel product={product} showNotes />
+      </div>
+    </ThemeScope>
   );
 }

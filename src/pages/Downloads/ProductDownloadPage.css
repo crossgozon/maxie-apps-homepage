@@ -1,0 +1,38 @@
+.product-download-page {
+  min-height: 60vh;
+  background: var(--bg-0);
+}
+
+.product-download-hero {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 64px 24px 32px;
+  text-align: center;
+}
+
+.product-download-eyebrow {
+  display: inline-block;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.product-download-hero h1 {
+  font-size: clamp(32px, 5vw, 44px);
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.product-download-hero p {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.product-download-panel {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}

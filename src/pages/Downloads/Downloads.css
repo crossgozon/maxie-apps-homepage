@@ -1,0 +1,54 @@
+.downloads-page {
+  padding: 48px 24px 80px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.downloads-header h1 {
+  font-size: 32px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.downloads-header p {
+  color: var(--muted);
+  margin: 0 0 36px 0;
+}
+
+.downloads-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 28px;
+}
+
+.downloads-product {
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.downloads-product-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.downloads-product-header h2 {
+  color: var(--text);
+  font-size: 22px;
+}
+
+.downloads-product-link {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.downloads-product-link:hover {
+  text-decoration: underline;
+}
