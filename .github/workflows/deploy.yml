@@ -27,13 +27,13 @@ jobs:
 
       - run: npm ci
 
-      # No custom domain confirmed yet, so build for the root path. Once a
-      # domain is attached, this stays "/"; if instead deploying to the
-      # default username.github.io/maxie-apps-homepage/ project Pages URL,
-      # set this to "/maxie-apps-homepage/" here.
+      # No custom domain is attached yet (confirmed via the Pages API - cname
+      # is null), so this actually serves from
+      # https://crossgozon.github.io/maxie-apps-homepage/, not the root.
+      # Switch this to "/" only once a custom domain (a CNAME file) is added.
       - run: npm run build
         env:
-          VITE_BASE_PATH: /
+          VITE_BASE_PATH: /maxie-apps-homepage/
 
       - uses: actions/upload-pages-artifact@v3
         with:
