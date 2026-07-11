@@ -29,13 +29,25 @@
   }
 }
 
-.page-transition {
-  display: block;
-}
-
+/* flex:1 on both the stage and the inner motion.div lets the Home page's
+   split-hero fill exactly the space left after the nav+footer (via its own
+   flex:1 in Home.css), instead of the old fixed calc(100vh - navHeight)
+   guess, which didn't account for the footer's own height and always left
+   a bit of unnecessary scroll. Pages with naturally tall content (About,
+   Downloads, etc.) are unaffected - flex:1 only grows to fill leftover
+   space, it doesn't shrink a page below its content's real height. */
 .page-transition-stage {
   position: relative;
   overflow-x: clip;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-transition {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .page-slide-right {

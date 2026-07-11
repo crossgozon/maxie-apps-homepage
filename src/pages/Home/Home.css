@@ -1,6 +1,9 @@
 .home-page {
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .home-hero-orb {
@@ -51,7 +54,7 @@
 .home-split {
   position: relative;
   display: flex;
-  min-height: calc(100vh - 65px);
+  flex: 1;
   isolation: isolate;
 }
 
