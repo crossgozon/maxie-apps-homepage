@@ -27,13 +27,13 @@ jobs:
 
       - run: npm ci
 
-      # No custom domain is attached yet (confirmed via the Pages API - cname
-      # is null), so this actually serves from
-      # https://crossgozon.github.io/maxie-apps-homepage/, not the root.
-      # Switch this to "/" only once a custom domain (a CNAME file) is added.
+      # www.maxie-apps.online is now attached as a custom domain (public/CNAME),
+      # so the site serves from the domain's root, not a GitHub Pages project
+      # subpath - revert to /maxie-apps-homepage/ if the custom domain is ever
+      # removed and the site falls back to https://crossgozon.github.io/maxie-apps-homepage/.
       - run: npm run build
         env:
-          VITE_BASE_PATH: /maxie-apps-homepage/
+          VITE_BASE_PATH: /
 
       - uses: actions/upload-pages-artifact@v3
         with:
