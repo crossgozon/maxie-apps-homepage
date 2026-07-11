@@ -17,11 +17,15 @@ export function Downloads() {
           <ThemeScope key={product.slug} theme={product.theme} className="downloads-product">
             <div className="downloads-product-header">
               <h2>{product.name}</h2>
-              <Link to={`/downloads/${product.slug}`} className="downloads-product-link">
+              <Link to={`/${product.slug}`} className="downloads-product-link">
                 Full details →
               </Link>
             </div>
-            <ReleasePanel product={product} />
+            <div className="downloads-product-panel">
+              <span className="downloads-product-panel-corner downloads-product-panel-corner-tl" aria-hidden="true" />
+              <span className="downloads-product-panel-corner downloads-product-panel-corner-br" aria-hidden="true" />
+              <ReleasePanel product={product} />
+            </div>
           </ThemeScope>
         ))}
       </div>

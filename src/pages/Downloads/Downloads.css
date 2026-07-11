@@ -1,31 +1,68 @@
 .downloads-page {
-  padding: 48px 24px 80px;
+  padding: 56px 24px 90px;
   max-width: 1180px;
   margin: 0 auto;
 }
 
 .downloads-header h1 {
-  font-size: 32px;
+  font-size: clamp(30px, 4vw, 40px);
   color: var(--text);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .downloads-header p {
   color: var(--muted);
-  margin: 0 0 36px 0;
+  font-size: 16px;
+  margin: 0 0 40px 0;
 }
 
 .downloads-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-  gap: 28px;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 32px;
 }
 
-.downloads-product {
-  background: var(--bg-1);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 24px;
+/* The card frame lives on .downloads-product-panel (wrapping just
+   ReleasePanel), not on .downloads-product itself - the header stays
+   outside the box, same composition as the original design. ReleasePanel
+   itself is shared with the individual product pages, which are meant to
+   stay card-free/transparent, so the frame can't live there either. */
+.downloads-product-panel {
+  position: relative;
+  padding: 44px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 40%), var(--panel);
+  border: 1px solid rgba(var(--accent-rgb), 0.4);
+  clip-path: polygon(26px 0, 100% 0, 100% calc(100% - 26px), calc(100% - 26px) 100%, 0 100%, 0 26px);
+  filter: drop-shadow(0 0 26px rgba(var(--accent-rgb), 0.16)) drop-shadow(0 24px 48px rgba(0, 0, 0, 0.32));
+}
+
+.downloads-product-panel-corner {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  pointer-events: none;
+}
+
+.downloads-product-panel-corner-tl {
+  top: 0;
+  left: 0;
+  border-top: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  opacity: 0.8;
+}
+
+.downloads-product-panel-corner-br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+  clip-path: polygon(100% 100%, 100% 0, 0 100%);
+  opacity: 0.8;
+}
+
+.downloads-product-panel .release-panel {
+  padding: 0;
 }
 
 .downloads-product-header {
@@ -33,17 +70,18 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .downloads-product-header h2 {
   color: var(--text);
-  font-size: 22px;
+  font-size: 24px;
 }
 
 .downloads-product-link {
   color: var(--accent);
-  font-size: 13px;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 14px;
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;

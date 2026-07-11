@@ -1,0 +1,51 @@
+@keyframes page-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes page-slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.page-transition {
+  display: block;
+}
+
+.page-transition-stage {
+  position: relative;
+  overflow-x: clip;
+}
+
+.page-slide-right {
+  animation-name: page-slide-in-right;
+}
+
+.page-slide-left {
+  animation-name: page-slide-in-left;
+}
+
+.page-slide-fade {
+  animation-name: page-fade-in;
+}

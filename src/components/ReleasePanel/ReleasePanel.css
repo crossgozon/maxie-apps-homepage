@@ -1,52 +1,65 @@
+/* No card at all now - no fill, no border, no corner brackets. Fully
+   transparent so the download area sits directly on the page/hero
+   background instead of being boxed off. */
 .release-panel {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 24px;
+  position: relative;
+  padding: 8px 24px 32px;
+  text-align: center;
+  background: transparent;
 }
 
-.release-meta {
+.release-stats {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
-  margin-bottom: 20px;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 28px 0;
 }
 
-.release-meta > div {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.release-meta-label {
-  font-size: 11px;
+.release-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted);
+  color: var(--text);
+  background: rgba(var(--accent-rgb), 0.1);
+  border: 1px solid rgba(var(--accent-rgb), 0.32);
+  border-radius: 6px;
+  padding: 7px 13px;
 }
 
-.release-meta strong {
-  color: var(--text);
-  font-size: 15px;
+.release-stat svg {
+  width: 12px;
+  height: 12px;
+  color: var(--accent);
+  opacity: 0.9;
 }
 
 .release-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  justify-content: center;
+  gap: 16px;
 }
 
 .release-notes {
-  margin-top: 20px;
+  margin-top: 24px;
   border-top: 1px solid var(--line);
-  padding-top: 16px;
+  padding-top: 18px;
+  text-align: left;
 }
 
 .release-notes summary {
   cursor: pointer;
   color: var(--accent);
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: 700;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.02em;
 }
 
 .release-notes pre {
@@ -55,48 +68,53 @@
   color: var(--muted);
   font-size: 13px;
   font-family: inherit;
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 .release-panel-loading {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .release-skeleton-line {
-  height: 14px;
-  border-radius: 6px;
-  background: var(--line);
-  animation: release-pulse 1.2s ease-in-out infinite;
+  height: 16px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--line), rgba(255, 255, 255, 0.14), var(--line));
+  background-size: 200% 100%;
+  animation: release-pulse 1.4s ease-in-out infinite;
 }
 
 .release-skeleton-button {
-  height: 40px;
-  width: 180px;
+  height: 46px;
+  width: 200px;
+  border-radius: 14px;
   margin-top: 8px;
 }
 
 @keyframes release-pulse {
-  0%,
-  100% {
-    opacity: 0.5;
+  0% {
+    background-position: 200% 0;
   }
-  50% {
-    opacity: 1;
+  100% {
+    background-position: -200% 0;
   }
 }
 
 .release-panel-error,
 .release-panel-empty {
+  padding: 28px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 14px;
+  text-align: left;
+  gap: 16px;
 }
 
 .release-panel-error p,
 .release-panel-empty p {
   color: var(--muted);
   margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
 }

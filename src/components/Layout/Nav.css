@@ -1,70 +1,181 @@
 .nav-header {
-  background: var(--bg-1);
-  border-bottom: 1px solid var(--line);
   position: sticky;
   top: 0;
+  background: rgba(14, 16, 21, 0.72);
+  backdrop-filter: blur(16px);
   z-index: 20;
+  animation: nav-drop-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* HUD-style divider instead of a flat border - a thin glowing gradient
+   line spanning both product accent colors, tying the neutral chrome to
+   the two brand identities it sits above. */
+.nav-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(33, 167, 227, 0.7) 20%,
+    rgba(255, 178, 74, 0.6) 50%,
+    rgba(185, 28, 43, 0.7) 80%,
+    transparent
+  );
+  box-shadow: 0 0 12px rgba(120, 170, 220, 0.35);
+  pointer-events: none;
+}
+
+@keyframes nav-drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .nav-inner {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 14px 24px;
+  padding: 10px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 20px;
 }
 
 .nav-brand {
-  font-family: "Rajdhani", sans-serif;
-  font-size: 20px;
-  font-weight: 700;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
-  color: var(--text);
-  letter-spacing: 0.02em;
+  transition: filter 0.25s ease;
+}
+
+.nav-brand-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+  transition: filter 0.25s ease;
+}
+
+.nav-brand:hover .nav-brand-logo {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 14px rgba(33, 167, 227, 0.55))
+    drop-shadow(0 0 14px rgba(185, 28, 43, 0.4));
 }
 
 .nav-toggle {
   display: none;
   flex-direction: column;
-  gap: 4px;
+  justify-content: center;
+  gap: 6px;
+  width: 42px;
+  height: 42px;
   background: transparent;
   border: none;
   cursor: pointer;
   padding: 8px;
+  /* Keeps the toggle pinned to the right edge even when the brand logo is
+     skipped (Home page) and it becomes the first flex child. */
+  margin-left: auto;
 }
 
 .nav-toggle span {
-  width: 22px;
+  width: 24px;
   height: 2px;
   background: var(--text);
   border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.2s ease;
+  transform-origin: center;
+}
+
+.nav-toggle-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle-open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.nav-toggle-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 28px;
+  /* Same reasoning as .nav-toggle above - stays right-aligned on its own
+     if the brand logo isn't rendered (Home page). */
+  margin-left: auto;
 }
 
 .nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   color: var(--muted);
   text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 6px 2px;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 8px 2px;
+  transition: color 0.15s ease, text-shadow 0.15s ease;
+}
+
+.nav-link svg {
+  width: 16px;
+  height: 16px;
+  opacity: 0.75;
+  transition: opacity 0.15s ease;
+}
+
+.nav-link:hover svg,
+.nav-link-active svg {
+  opacity: 1;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-link:hover {
   color: var(--text);
 }
 
+.nav-link:hover::after {
+  transform: scaleX(0.6);
+}
+
 .nav-link-active {
   color: var(--text);
-  border-bottom-color: var(--accent);
+  text-shadow: 0 0 16px rgba(var(--accent-rgb), 0.5);
+}
+
+.nav-link-active::after {
+  transform: scaleX(1);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.7);
 }
 
 @media (max-width: 720px) {
@@ -77,6 +188,7 @@
     top: 100%;
     left: 0;
     right: 0;
+    margin-left: 0;
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
@@ -84,7 +196,7 @@
     border-bottom: 1px solid var(--line);
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.2s ease;
+    transition: max-height 0.28s ease;
   }
 
   .nav-links-open {
@@ -93,13 +205,21 @@
 
   .nav-link {
     width: 100%;
-    padding: 14px 24px;
+    padding: 16px 28px;
     border-bottom: 1px solid var(--line);
     border-left: 2px solid transparent;
+    transition: color 0.15s ease, border-left-color 0.15s ease, padding-left 0.15s ease;
+  }
+
+  .nav-link:hover {
+    padding-left: 28px;
+  }
+
+  .nav-link::after {
+    display: none;
   }
 
   .nav-link-active {
-    border-bottom: 1px solid var(--line);
     border-left-color: var(--accent);
   }
 }

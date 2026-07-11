@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import "../common/Button.css";
+import { useEffect, useRef, useState } from "react";
+import "./DownloadButton.css";
 
 interface DownloadButtonProps {
   url: string;
   fileName: string;
-  children: ReactNode;
-  variant?: "primary" | "secondary";
+  label: string;
+  kind: "github" | "mirror";
 }
 
 /**
@@ -14,7 +14,7 @@ interface DownloadButtonProps {
  * direct URL (still a real, working download) if the preload fails for any
  * reason - the button is never dead.
  */
-export function DownloadButton({ url, fileName, children, variant = "primary" }: DownloadButtonProps) {
+export function DownloadButton({ url, fileName, label, kind }: DownloadButtonProps) {
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [blobFailed, setBlobFailed] = useState(false);
   const revokeRef = useRef<string | null>(null);
@@ -56,14 +56,29 @@ export function DownloadButton({ url, fileName, children, variant = "primary" }:
 
   return (
     <a
-      className={`btn btn-${variant}`}
+      className={`dl-button dl-button-${kind}`}
       href={blobUrl ?? url}
       download={fileName}
       rel="noopener"
       data-blob-ready={blobUrl ? "1" : undefined}
       data-blob-failed={blobFailed ? "1" : undefined}
     >
-      {children}
+      <span>{label}</span>
+      {kind === "github" ? (
+        <img className="dl-mark dl-mark-github" src="/assets/maxclicker/github_logo_cropped.png" alt="" loading="lazy" decoding="async" />
+      ) : (
+        <img
+          className="dl-mark dl-mark-backblaze"
+          src="https://secure.backblaze.com/bzapp_web_assets/public/scripts/3b562092dff3aa9cd10215e0d762f6e3.svg"
+          alt=""
+          loading="lazy"
+          decoding="async"
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            e.currentTarget.style.display = "none";
+          }}
+        />
+      )}
     </a>
   );
 }

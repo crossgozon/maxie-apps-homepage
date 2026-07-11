@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PNG Background Remover</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: #0a0c10;
+    color: #eef2f7;
+    padding: 32px 20px 60px;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .sub { color: #8f98a8; font-size: 14px; margin: 0 0 24px; line-height: 1.5; }
+  .controls {
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 16px 18px; margin-bottom: 20px;
+  }
+  .controls label { font-size: 13px; color: #b6bfcc; display: flex; align-items: center; gap: 8px; }
+  .controls input[type="number"] {
+    width: 70px; padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);
+    background: #14171d; color: #eef2f7;
+  }
+  .dropzone {
+    border: 2px dashed rgba(255,255,255,0.18);
+    border-radius: 14px;
+    padding: 40px 20px;
+    text-align: center;
+    color: #8f98a8;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    margin-bottom: 24px;
+  }
+  .dropzone.drag-over {
+    border-color: #21a7e3;
+    background: rgba(33,167,227,0.06);
+  }
+  .dropzone input { display: none; }
+  .results { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+  .card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .card h3 { font-size: 13px; margin: 0 0 10px; font-weight: 600; word-break: break-all; color: #cfd6e0; }
+  .checker {
+    background-image:
+      linear-gradient(45deg, #2a2d33 25%, transparent 25%),
+      linear-gradient(-45deg, #2a2d33 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #2a2d33 75%),
+      linear-gradient(-45deg, transparent 75%, #2a2d33 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    background-color: #17191e;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 8px;
+  }
+  .card canvas { max-width: 100%; height: auto; display: block; }
+  .card .row { display: flex; gap: 8px; margin-top: 10px; }
+  .btn {
+    flex: 1; text-align: center; padding: 8px 10px; border-radius: 8px; font-size: 12.5px;
+    font-weight: 700; text-decoration: none; cursor: pointer; border: 1px solid transparent;
+  }
+  .btn-primary { background: #21a7e3; color: #04141c; }
+  .btn-secondary { background: rgba(255,255,255,0.06); color: #eef2f7; border-color: rgba(255,255,255,0.15); }
+  .status { font-size: 12px; color: #8f98a8; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>PNG Background Remover</h1>
+  <p class="sub">
+    Drop one or more PNGs below. The background color is auto-detected from each image's own corner
+    (whatever color it is), then removed via edge-connected flood fill with a smooth, halo-free edge -
+    works on flat/solid backgrounds (logos, icons, badges), not on photos or gradients. Nothing is
+    uploaded anywhere; everything runs locally in this page.
+  </p>
+
+  <div class="controls">
+    <label>Tolerance
+      <input type="number" id="tolerance" value="16" min="1" max="120">
+    </label>
+    <span class="status">Lower = stricter background match. Raise if background pixels are left behind; lower if it's eating into the artwork.</span>
+  </div>
+
+  <label class="dropzone" id="dropzone">
+    <input type="file" id="fileInput" accept="image/png" multiple>
+    <div>Click to choose PNG files, or drag &amp; drop them here</div>
+  </label>
+
+  <div class="results" id="results"></div>
+</div>
+
+<script>
+const dropzone = document.getElementById("dropzone");
+const fileInput = document.getElementById("fileInput");
+const resultsEl = document.getElementById("results");
+const toleranceInput = document.getElementById("tolerance");
+
+["dragenter", "dragover"].forEach(evt =>
+  dropzone.addEventListener(evt, e => { e.preventDefault(); dropzone.classList.add("drag-over"); })
+);
+["dragleave", "drop"].forEach(evt =>
+  dropzone.addEventListener(evt, e => { e.preventDefault(); dropzone.classList.remove("drag-over"); })
+);
+dropzone.addEventListener("drop", e => {
+  const files = Array.from(e.dataTransfer.files).filter(f => f.type === "image/png");
+  handleFiles(files);
+});
+fileInput.addEventListener("change", () => {
+  handleFiles(Array.from(fileInput.files));
+  fileInput.value = "";
+});
+
+function handleFiles(files) {
+  const tolerance = Math.max(1, Math.min(120, parseInt(toleranceInput.value, 10) || 16));
+  files.forEach(file => processFile(file, tolerance));
+}
+
+function processFile(file, tolerance) {
+  const card = document.createElement("div");
+  card.className = "card";
+  const title = document.createElement("h3");
+  title.textContent = file.name;
+  const checker = document.createElement("div");
+  checker.className = "checker";
+  const canvas = document.createElement("canvas");
+  checker.appendChild(canvas);
+  const rowStatus = document.createElement("div");
+  rowStatus.className = "status";
+  rowStatus.textContent = "Processing...";
+  card.appendChild(title);
+  card.appendChild(checker);
+  card.appendChild(rowStatus);
+  resultsEl.appendChild(card);
+
+  const img = new Image();
+  img.onload = () => {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    let imageData;
+    try {
+      imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    } catch (err) {
+      rowStatus.textContent = "Failed to read image data.";
+      return;
+    }
+
+    removeBackground(imageData, tolerance);
+    ctx.putImageData(imageData, 0, 0);
+    rowStatus.textContent = `${img.width} x ${img.height}px - done`;
+
+    const row = document.createElement("div");
+    row.className = "row";
+    const downloadBtn = document.createElement("a");
+    downloadBtn.className = "btn btn-primary";
+    downloadBtn.textContent = "Download PNG";
+    downloadBtn.href = canvas.toDataURL("image/png");
+    downloadBtn.download = file.name.replace(/\.png$/i, "") + "-transparent.png";
+    row.appendChild(downloadBtn);
+    card.appendChild(row);
+  };
+  img.onerror = () => { rowStatus.textContent = "Could not load this file."; };
+  img.src = URL.createObjectURL(file);
+}
+
+function removeBackground(imageData, tolerance) {
+  const { width: w, height: h, data } = imageData;
+  const idxOf = (x, y) => (y * w + x) * 4;
+
+  const refOff = idxOf(0, 0);
+  const refR = data[refOff];
+  const refG = data[refOff + 1];
+  const refB = data[refOff + 2];
+
+  const isBackground = new Uint8Array(w * h);
+  const queue = [];
+
+  function closeToRef(off) {
+    const dr = data[off] - refR;
+    const dg = data[off + 1] - refG;
+    const db = data[off + 2] - refB;
+    return Math.abs(dr) <= tolerance && Math.abs(dg) <= tolerance && Math.abs(db) <= tolerance;
+  }
+
+  function trySeed(x, y) {
+    const pIdx = y * w + x;
+    if (isBackground[pIdx]) return;
+    if (!closeToRef(idxOf(x, y))) return;
+    isBackground[pIdx] = 1;
+    queue.push(pIdx);
+  }
+
+  for (let x = 0; x < w; x++) { trySeed(x, 0); trySeed(x, h - 1); }
+  for (let y = 0; y < h; y++) { trySeed(0, y); trySeed(w - 1, y); }
+
+  function trySeedNeighbor(x, y) {
+    const pIdx = y * w + x;
+    if (isBackground[pIdx]) return;
+    const off = idxOf(x, y);
+    if (!closeToRef(off)) return;
+    isBackground[pIdx] = 1;
+    queue.push(pIdx);
+  }
+
+  // Pass 1: flood fill the core background region (strict tolerance).
+  let head = 0;
+  while (head < queue.length) {
+    const pIdx = queue[head++];
+    const x = pIdx % w;
+    const y = (pIdx / w) | 0;
+    if (x > 0) trySeedNeighbor(x - 1, y);
+    if (x < w - 1) trySeedNeighbor(x + 1, y);
+    if (y > 0) trySeedNeighbor(x, y - 1);
+    if (y < h - 1) trySeedNeighbor(x, y + 1);
+  }
+
+  // Pass 2: from each core-background pixel, "unmix" its non-background neighbors
+  // (the anti-aliased edge ring) instead of leaving a hard 0/255 alpha cutoff.
+  const processed = new Uint8Array(w * h);
+  const FEATHER_RANGE = 40;
+
+  function feather(x, y) {
+    if (x < 0 || x >= w || y < 0 || y >= h) return;
+    const pIdx = y * w + x;
+    if (isBackground[pIdx] || processed[pIdx]) return;
+    processed[pIdx] = 1;
+
+    const off = idxOf(x, y);
+    const r = data[off], g = data[off + 1], b = data[off + 2];
+    const dr = Math.abs(r - refR), dg = Math.abs(g - refG), db = Math.abs(b - refB);
+    const spread = Math.max(dr, dg, db);
+
+    if (spread >= FEATHER_RANGE) return; // clearly real artwork already
+
+    const t = spread / FEATHER_RANGE;
+    if (t <= 0) { data[off + 3] = 0; return; }
+
+    const newR = (r - refR * (1 - t)) / t;
+    const newG = (g - refG * (1 - t)) / t;
+    const newB = (b - refB * (1 - t)) / t;
+
+    data[off] = clampByte(newR);
+    data[off + 1] = clampByte(newG);
+    data[off + 2] = clampByte(newB);
+    data[off + 3] = Math.round(255 * t);
+  }
+
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const pIdx = y * w + x;
+      if (!isBackground[pIdx]) continue;
+      data[idxOf(x, y) + 3] = 0;
+      feather(x - 1, y);
+      feather(x + 1, y);
+      feather(x, y - 1);
+      feather(x, y + 1);
+    }
+  }
+}
+
+function clampByte(v) {
+  if (v < 0) return 0;
+  if (v > 255) return 255;
+  return v | 0;
+}
+</script>
+</body>
+</html>

@@ -1,17 +1,80 @@
 .site-footer {
-  border-top: 1px solid var(--line);
+  position: relative;
   background: var(--bg-1);
   margin-top: 40px;
+}
+
+/* The Home page's split-hero already fills the full viewport height on its
+   own - the standard 40px gap above leaves an empty band between it and
+   the footer's glowing divider, instead of the footer sitting flush
+   against it. */
+.page-transition-home + .site-footer {
+  margin-top: 0;
+}
+
+/* Same HUD-style glowing divider as the header, so the chrome that bookends
+   the page reads as one consistent system. */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(33, 167, 227, 0.6) 20%,
+    rgba(255, 178, 74, 0.5) 50%,
+    rgba(185, 28, 43, 0.6) 80%,
+    transparent
+  );
+  box-shadow: 0 0 12px rgba(120, 170, 220, 0.3);
+  pointer-events: none;
 }
 
 .site-footer-inner {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 20px 24px;
+  padding: 24px 24px 26px;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 10px 24px;
+}
+
+.site-footer-brand {
+  height: 26px;
+  width: auto;
+  display: block;
+}
+
+.site-footer-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 600;
+  font-size: 13.5px;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.site-footer-copy {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 500;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
   color: var(--muted);
-  font-size: 13px;
+}
+
+@media (max-width: 720px) {
+  .site-footer-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 22px 24px 24px;
+    gap: 10px;
+  }
 }

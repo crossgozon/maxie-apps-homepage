@@ -35,9 +35,9 @@ export function useLatestRelease(config: ProductReleaseConfig): ReleaseState {
       cancelled = true;
     };
     // config's identity should stay stable (defined once in products.ts), so
-    // re-fetching keys off the repo it actually points at.
+    // re-fetching keys off the release sources it actually points at.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [config.repo]);
+  }, [config.repo, config.remoteConfigUrls?.join("|")]);
 
   return state;
 }

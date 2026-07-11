@@ -1,6 +1,51 @@
 @font-face {
   font-family: "Rajdhani";
+  src: url("/assets/fonts/Rajdhani-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rajdhani";
+  src: url("/assets/fonts/Rajdhani-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rajdhani";
   src: url("/assets/maxclicker/Rajdhani-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Angular sci-fi display face reserved for hero headlines and short tag
+   labels - Rajdhani carries body/UI text, Orbitron is the "gaming HUD"
+   accent that makes the techy identity unmistakable at a glance. */
+@font-face {
+  font-family: "Orbitron";
+  src: url("/assets/fonts/Orbitron-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Orbitron";
+  src: url("/assets/fonts/Orbitron-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Hero-statement face - distinct from both Rajdhani (body/UI) and Orbitron
+   (product logotypes), reserved for the single Home page headline. */
+@font-face {
+  font-family: "Chakra Petch";
+  src: url("/assets/fonts/ChakraPetch-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -28,7 +73,8 @@ h1,
 h2,
 h3 {
   font-family: "Rajdhani", "Segoe UI", sans-serif;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.01em;
   margin: 0;
 }
 
@@ -44,4 +90,82 @@ button {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--bg-0);
+}
+
+/* Reusable "card" surface used across product cards, release panels, etc. -
+   soft glass-panel look with a glowing top edge, matching the reference
+   site's shell/side-card treatment instead of a flat bordered box. */
+.gv-shell {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 40%), var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.32);
+}
+
+.gv-eyebrow {
+  display: inline-block;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  text-shadow: 0 0 18px rgba(var(--accent-2-rgb), 0.35);
+}
+
+/* ---- Shared motion utilities ---- */
+
+@keyframes gv-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(18px, -22px) scale(1.06);
+  }
+}
+
+@keyframes gv-float-slow {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-24px, 18px) scale(1.08);
+  }
+}
+
+@keyframes gv-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(41, 196, 109, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgba(41, 196, 109, 0);
+  }
+}
+
+@keyframes gv-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gv-fade-up {
+  animation: gv-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Floating glow orb, used behind hero sections for ambient motion. */
+.gv-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(4px);
+  pointer-events: none;
 }

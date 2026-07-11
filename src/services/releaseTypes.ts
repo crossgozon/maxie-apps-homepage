@@ -23,7 +23,7 @@ export interface ReleaseInfo {
   version: string;
   publishedAt: string | null;
   assetName: string;
-  assetSizeBytes: number;
+  assetSizeBytes: number | null;
   assetUrl: string;
   notes: string | null;
   releasePageUrl: string;

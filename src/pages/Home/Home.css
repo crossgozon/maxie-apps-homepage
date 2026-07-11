@@ -1,48 +1,503 @@
-.home-hero {
-  padding: 80px 24px 60px;
-  text-align: center;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(255, 178, 74, 0.08), transparent 32%),
-    radial-gradient(circle at 80% 10%, rgba(185, 28, 43, 0.12), transparent 34%),
-    var(--bg-0);
+.home-page {
+  position: relative;
+  overflow: hidden;
 }
 
-.home-hero-inner {
-  max-width: 720px;
+.home-hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(42px);
+  pointer-events: none;
+  opacity: 0.26;
+  z-index: 1;
+}
+
+.home-hero-orb-blue {
+  top: -60px;
+  left: 8%;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(33, 167, 227, 0.5), transparent 70%);
+  animation: gv-float 9s ease-in-out infinite;
+}
+
+.home-hero-orb-red {
+  top: 20px;
+  right: 6%;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(185, 28, 43, 0.45), transparent 70%);
+  animation: gv-float-slow 11s ease-in-out infinite;
+}
+
+.home-hero-orb-amber {
+  bottom: -80px;
+  left: 42%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255, 178, 74, 0.35), transparent 70%);
+  animation: gv-float 13s ease-in-out infinite reverse;
+}
+
+.home-hero-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #29c46d;
+  animation: gv-pulse-ring 2s ease-out infinite;
+}
+
+/* Full-page split: two clickable halves fill the whole viewport below the nav. */
+.home-split {
+  position: relative;
+  display: flex;
+  min-height: calc(100vh - 65px);
+  isolation: isolate;
+}
+
+.home-split::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-0.5px);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.home-split-side {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 32px;
+  overflow: hidden;
+  text-decoration: none;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(var(--accent-rgb), 0.32), transparent 66%),
+    linear-gradient(165deg, var(--bg-2), var(--bg-0) 55%);
+  transition: background-color 0.22s ease, filter 0.22s ease;
+}
+
+.home-split-side > :not(.home-split-glow):not(.home-split-watermark) {
+  position: relative;
+  z-index: 2;
+  transition: text-shadow 0.22s ease;
+}
+
+.home-split-side::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg, transparent 28%, rgba(255, 255, 255, 0.035) 50%, transparent 72%),
+    linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.18));
+  opacity: 0;
+  transform: translateX(-18%);
+  transition: opacity 0.28s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.home-split-side:hover::before,
+.home-split-side:focus-visible::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.home-split-side:hover,
+.home-split-side:focus-visible {
+  filter: saturate(1.08) brightness(1.02);
+}
+
+.home-split-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 38%),
+    radial-gradient(circle at 50% 42%, rgba(var(--accent-rgb), 0.18), transparent 60%);
+  opacity: 0.58;
+  transition: opacity 0.3s ease;
+  animation: home-side-glow 5.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.home-split-side:hover .home-split-glow {
+  opacity: 0.78;
+  animation-duration: 2.8s;
+}
+
+/* Large, faded product icon sitting behind the text as a watermark, instead
+   of a small icon above the title. */
+.home-split-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(58%, 380px);
+  height: auto;
+  opacity: 0.45;
+  filter: drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.1));
+  pointer-events: none;
+  z-index: 0;
+  animation: home-watermark-breathe 7s ease-in-out infinite;
+  transition: opacity 0.28s ease, filter 0.28s ease;
+}
+
+.home-split-side:hover .home-split-watermark {
+  opacity: 1;
+  filter: drop-shadow(0 0 18px rgba(var(--accent-rgb), 0.22));
+  animation: home-watermark-hover 1.9s ease-in-out infinite;
+}
+
+/* No wordmark image for this product (MaxClicker has no logotype asset in
+   its codebase, only an app icon) - the text title is styled to read as a
+   graphic logotype instead, so it carries the same visual weight as
+   MaxMacro's real header_title.png banner next to it. */
+.home-split-name {
+  font-family: "Orbitron", "Rajdhani", sans-serif;
+  font-weight: 900;
+  font-size: clamp(20px, 2.6vw, 32px);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 14px;
+  /* A colored glow alone doesn't separate text from a same-hue backdrop -
+     it needs a tight, dark contact shadow first for actual legibility,
+     with the colored glow layered further out purely for the gaming-vibe
+     look. */
+  text-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.9),
+    0 6px 20px rgba(0, 0, 0, 0.6),
+    0 0 26px rgba(var(--accent-rgb), 0.5);
+  transition: text-shadow 0.22s ease, color 0.22s ease;
+}
+
+.home-split-side:hover .home-split-name,
+.home-split-side:focus-visible .home-split-name {
+  text-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.9),
+    0 6px 20px rgba(0, 0, 0, 0.6),
+    0 0 16px rgba(var(--accent-rgb), 0.8),
+    0 0 42px rgba(var(--accent-rgb), 0.42);
+}
+
+/* Real product logotype in place of the plain text title, for products that
+   have one (MaxClicker's and MaxMacro's header_title.png). The two source
+   images have very different aspect ratios (MaxClicker ~5.5:1, MaxMacro
+   ~2.64:1) - sizing the <img> by width alone gave them very different
+   rendered heights, which threw off the vertical rhythm of each column
+   (the CTA buttons ended up at different heights, reading as "not
+   symmetrical"). This fixed bounding-box frame + object-fit: contain
+   forces both logotypes into the identical footprint regardless of their
+   native proportions. */
+.home-split-wordmark-frame {
+  /* Viewport-relative (not container-percentage) on purpose - it needs to
+     shrink at the same rate as .home-badge-frame's vw-based width as the
+     window narrows. A container-percentage width clamps to its max cap
+     while the badge keeps shrinking, so at moderate widths the two drift
+     out of the ratio that keeps them from colliding in the middle. */
+  width: clamp(150px, 20vw, 280px);
+  height: clamp(48px, 6.4vw, 90px);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-split-wordmark {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.85)) drop-shadow(0 10px 26px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 24px rgba(var(--accent-rgb), 0.4));
+  transition: filter 0.22s ease;
+}
+
+.home-split-side:hover .home-split-wordmark,
+.home-split-side:focus-visible .home-split-wordmark {
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.85)) drop-shadow(0 10px 26px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 18px rgba(var(--accent-rgb), 0.75)) drop-shadow(0 0 40px rgba(var(--accent-rgb), 0.4));
+}
+
+.home-split-tagline {
+  max-width: 380px;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 500;
+  color: var(--text);
+  font-size: 15.5px;
+  line-height: 1.6;
+  margin: 0 0 26px 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 3px 12px rgba(0, 0, 0, 0.55);
+  /* Hard-capped at 2 lines so both sides keep the same vertical rhythm
+     (and the CTA buttons stay level) regardless of exact copy length. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.home-split-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 12px 22px;
+  /* Accent-colored text on an accent-tinted backdrop is low contrast at
+     rest - a dark chip background keeps the pill readable no matter how
+     saturated the split background gets. */
+  background: rgba(4, 7, 13, 0.55);
+  border: 1px solid rgba(var(--accent-rgb), 0.4);
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.home-split-cta-icon {
+  font-size: 13px;
+  transition: transform 0.2s ease;
+}
+
+.home-split-side:hover .home-split-cta {
+  background: var(--accent);
+  color: #04070c;
+  border-color: var(--accent);
+  box-shadow: 0 0 26px rgba(var(--accent-rgb), 0.5);
+}
+
+.home-split-side:hover .home-split-cta-icon {
+  transform: translateX(4px);
+}
+
+.home-split-side:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -8px;
+}
+
+/* Center overlay: big badge with the intro copy stacked underneath it,
+   sitting on top of both halves at the dividing line. */
+.home-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 520px;
+  padding: 0 24px;
+  pointer-events: none;
+}
+
+.home-badge-frame {
+  position: relative;
+  /* Kept deliberately narrower than before, and scaled by vw rather than a
+     wide 32vw sweep, so at moderate "shrunk browser window" desktop widths
+     (roughly 860-1400px) the badge and the split-side wordmarks/titles
+     next to it (also vw-scaled) shrink in lockstep instead of the badge
+     staying disproportionately large and colliding with them. */
+  width: clamp(200px, 24vw, 340px);
+  aspect-ratio: 1;
   margin: 0 auto;
 }
 
-.home-hero-eyebrow {
-  display: inline-block;
-  color: var(--muted);
+.home-badge-glow {
+  position: absolute;
+  inset: -7%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 216, 77, 0.12) 0%,
+    rgba(77, 224, 255, 0.1) 35%,
+    rgba(230, 58, 58, 0.09) 55%,
+    transparent 75%
+  );
+  filter: blur(10px);
+  animation: badge-glow-pulse 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes badge-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes home-side-glow {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.68;
+  }
+}
+
+@keyframes home-watermark-breathe {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.035);
+  }
+}
+
+@keyframes home-watermark-hover {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1.04) rotate(0deg);
+  }
+  35% {
+    transform: translate(-50%, -50%) scale(1.085) rotate(-1deg);
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.065) rotate(1deg);
+  }
+}
+
+.home-center-badge {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 14px 34px rgba(0, 0, 0, 0.6));
+}
+
+/* No boxed panel here on purpose - a card behind this text kept fighting
+   with the badge's soft glow (hard edges cutting through it). Floating text
+   with a strong dark contact shadow reads fine over any backdrop and stays
+   visually part of the same scene as the badge instead of sitting in a box. */
+.home-center-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Rajdhani", sans-serif;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  margin-bottom: 16px;
-}
-
-.home-hero-title {
-  font-size: clamp(32px, 5vw, 52px);
-  color: var(--text);
+  color: #d8f8e6;
+  background: rgba(41, 196, 109, 0.16);
+  border: 1px solid rgba(41, 196, 109, 0.32);
+  border-radius: 999px;
+  padding: 8px 18px;
+  margin-top: -10px;
   margin-bottom: 18px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
 }
 
-.home-hero-subtitle {
-  color: var(--muted);
+/* Deliberately NOT the same treatment as the product logotypes flanking it
+   (Orbitron 900 uppercase) - this is the shared Maxie Apps headline, not a
+   product name, so it stays sentence case and gets a two-color gradient
+   fill (blue -> red, spanning both product accents) instead of a single
+   accent glow, to read as its own distinct thing. */
+.home-center-title {
+  font-family: "Chakra Petch", "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: clamp(22px, 4vw, 42px);
+  line-height: 1.2;
+  letter-spacing: 0.015em;
+  white-space: nowrap;
+  color: #fff;
+  margin-bottom: 14px;
+  background: linear-gradient(90deg, #4de0ff 0%, #ffd84d 50%, #ff6a3d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.9)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.6));
+}
+
+.home-center-subtitle {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 500;
+  color: #edf2f8;
   font-size: 16px;
   line-height: 1.6;
   margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 4px 16px rgba(0, 0, 0, 0.6);
 }
 
-.home-products {
-  padding: 20px 24px 80px;
-}
+@media (max-width: 1180px) {
+  /* Stacked mobile layout: instead of an absolutely-positioned overlay with
+     a hand-tuned padding-top offset to clear it (fragile - breaks every
+     time the badge/text stack's height changes), the center block becomes
+     a normal-flow flex item placed between the two sides via `order`. Each
+     section's real height then just pushes the next one down, no magic
+     numbers to maintain. */
+  .home-split {
+    flex-direction: column;
+    min-height: 0;
+  }
 
-.home-products-inner {
-  max-width: 1180px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 28px;
+  .home-split::after {
+    display: none;
+  }
+
+  .home-split-side {
+    padding: 48px 24px;
+  }
+
+  .home-split-side:first-child {
+    order: 1;
+  }
+
+  .home-split-side:nth-child(2) {
+    order: 3;
+  }
+
+  .home-center {
+    position: static;
+    transform: none;
+    order: 2;
+    width: 100%;
+    max-width: 420px;
+    margin: 8px auto;
+    padding: 0 24px;
+  }
+
+  .home-badge-frame {
+    width: 168px;
+  }
+
+  .home-center-status {
+    margin-top: 0;
+    font-size: 12px;
+    margin-bottom: 10px;
+    padding: 7px 12px;
+  }
+
+  .home-center-title {
+    font-size: clamp(18px, 6vw, 26px);
+    letter-spacing: 0;
+    margin-bottom: 8px;
+  }
+
+  .home-center-subtitle {
+    font-size: 13.5px;
+    line-height: 1.48;
+  }
 }
