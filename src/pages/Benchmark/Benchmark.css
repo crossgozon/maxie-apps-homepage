@@ -16,12 +16,6 @@
   align-items: center;
 }
 
-.benchmark-icon {
-  border-radius: 20px;
-  margin-bottom: 22px;
-  filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.5));
-}
-
 .benchmark-wordmark {
   width: min(90%, 480px);
   height: auto;

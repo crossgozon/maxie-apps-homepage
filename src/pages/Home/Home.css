@@ -6,6 +6,30 @@
   flex: 1;
 }
 
+/* Shown only for the brief window while hero images preload, so the
+   doors-closing reveal below always plays against fully-loaded content
+   instead of possibly finishing before the images arrive. */
+.home-page-loading {
+  align-items: center;
+  justify-content: center;
+}
+
+.home-page-loading::after {
+  content: "";
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.12);
+  border-top-color: rgba(255, 255, 255, 0.5);
+  animation: home-loading-spin 0.8s linear infinite;
+}
+
+@keyframes home-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .home-hero-orb {
   position: absolute;
   border-radius: 50%;
@@ -87,6 +111,37 @@
     radial-gradient(circle at 50% 38%, rgba(var(--accent-rgb), 0.32), transparent 66%),
     linear-gradient(165deg, var(--bg-2), var(--bg-0) 55%);
   transition: background-color 0.22s ease, filter 0.22s ease;
+}
+
+/* "Doors closing" reveal on page load - MaxClicker (blue) slides shut from
+   the left, MaxMacro (red) from the right, meeting at the center where the
+   badge sits. translateX is a percentage of each panel's own width (not
+   the viewport), so "100%" always means "fully off to that panel's own
+   side" regardless of screen size. */
+@keyframes home-door-close-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes home-door-close-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.home-door-left {
+  animation: home-door-close-left 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.home-door-right {
+  animation: home-door-close-right 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .home-split-side > :not(.home-split-glow):not(.home-split-watermark) {

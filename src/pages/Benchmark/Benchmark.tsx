@@ -49,7 +49,6 @@ export function Benchmark() {
   return (
     <ThemeScope theme="maxperformance" as="main" className="benchmark-page">
       <div className="benchmark-hero gv-fade-up">
-        <img src="/assets/maxperformance/icon.png" alt="" width={72} height={72} className="benchmark-icon" />
         <img src="/assets/maxperformance/header_title.png" alt="MAXPERFORMANCE" className="benchmark-wordmark" />
         <p className="benchmark-description">
           MAXPERFORMANCE captures real keyboard and mouse input timing, scores stability and warm-up

@@ -29,7 +29,7 @@ export function ProductDownloadPage() {
     <ThemeScope theme={product.theme} as="main" className="product-download-page">
       <div
         className="product-download-bg"
-        style={{ backgroundImage: `url(/assets/${product.slug}/background.png)` }}
+        style={{ backgroundImage: `url(/assets/${product.slug}/background.jpg)` }}
         aria-hidden="true"
       />
       <motion.div
