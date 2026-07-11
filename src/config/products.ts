@@ -27,7 +27,7 @@ export const products: Record<ProductSlug, ProductConfig> = {
       assetNameRegex: /^Maxclicker\..+\.zip$/i,
       excludeAssetRegex: /updater/i,
       mirrorCommentTag: "MAXCLICKER_RELEASE_MIRRORS",
-      mirrorPathSegment: "maxclicker",
+      mirrorUrlPattern: /^https:\/\/backblaze\.maxie-apps\.online\/maxclicker\/Release\/[^/]+\/[^/]+\.zip$/i,
     },
   },
   maxmacro: {
@@ -43,7 +43,7 @@ export const products: Record<ProductSlug, ProductConfig> = {
       assetNameRegex: /^Maxmacro\..+\.zip$/i,
       excludeAssetRegex: /updater/i,
       mirrorCommentTag: "MAXMACRO_RELEASE_MIRRORS",
-      mirrorPathSegment: "maxmacro",
+      mirrorUrlPattern: /^https:\/\/backblaze\.maxmacro\.maxie-apps\.online\/maxmacro\/Release\/[^/]+\/[^/]+\.zip$/i,
     },
   },
 };

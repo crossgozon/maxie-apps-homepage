@@ -9,8 +9,14 @@ export interface ProductReleaseConfig {
   excludeAssetRegex?: RegExp;
   /** Hidden HTML-comment tag wrapping the mirror JSON in the release body, e.g. "MAXCLICKER_RELEASE_MIRRORS". */
   mirrorCommentTag: string;
-  /** URL path segment used to validate mirror URLs, e.g. "maxclicker" -> backblaze.maxie-apps.online/maxclicker/... */
-  mirrorPathSegment: string;
+  /**
+   * Validates a mirror's url before it's trusted. Each product's Backblaze
+   * mirror can live under its own domain shape (e.g. MaxClicker uses
+   * backblaze.maxie-apps.online/maxclicker/..., MaxMacro uses
+   * backblaze.maxmacro.maxie-apps.online/maxmacro/...) - this is defined per
+   * product rather than derived from one shared template.
+   */
+  mirrorUrlPattern: RegExp;
 }
 
 export class ReleaseFetchError extends Error {
@@ -88,14 +94,10 @@ function parseReleaseMirrors(release: GithubRelease, config: ProductReleaseConfi
   try {
     const parsed = JSON.parse(match[1]);
     const mirrors: ReleaseMirror[] = Array.isArray(parsed.mirrors) ? parsed.mirrors : [];
-    const urlPattern = new RegExp(
-      `^https://backblaze\\.maxie-apps\\.online/${config.mirrorPathSegment}/Release/[^/]+/[^/]+\\.zip$`,
-      "i",
-    );
 
     return mirrors.filter((mirror) => {
       const url = String(mirror?.url || "").trim();
-      if (!url || !urlPattern.test(url)) {
+      if (!url || !config.mirrorUrlPattern.test(url)) {
         return false;
       }
 
