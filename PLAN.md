@@ -1,5 +1,14 @@
 # Maxie Apps Centralized Website (maxie-apps-homepage) — Phased Build Plan
 
+**Status: All 9 phases complete.** See commit history on `main` for one commit per phase.
+
+Known limitation (not fixable from this repo): `maxmacro-download`'s current
+GitHub release notes have the wrong mirror comment tag
+(`MAXCLICKER_RELEASE_MIRRORS` instead of `MAXMACRO_RELEASE_MIRRORS`) and a
+Backblaze URL under a different domain shape than MaxClicker's. GitHub
+download still works for MaxMacro; the Backblaze mirror button just won't
+appear until that release's notes are corrected in `maxmacro-download`.
+
 ## Context
 
 Two products (MaxClicker, MaxMacro) currently have separate, static, framework-less download pages with no shared identity. `maxie-apps-homepage` is a fresh empty repo meant to become the real centralized site: React, multi-page, both products introduced and linked, with a proper Downloads section. This plan is based on directly inspecting `maxclicker-download` (existing site + release-fetching logic + real navy/blue/amber palette) and the real MaxMacro desktop app theme (crimson/near-black, from `Maxmacro/App/Themes/MaxmacroTheme.xaml`) — not assumptions.
