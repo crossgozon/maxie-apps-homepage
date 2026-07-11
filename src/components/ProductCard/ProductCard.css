@@ -7,6 +7,12 @@
   min-height: 260px;
 }
 
+.product-card-icon {
+  border-radius: 10px;
+  margin-bottom: 16px;
+  display: block;
+}
+
 .product-card-name {
   font-size: 26px;
   color: var(--text);

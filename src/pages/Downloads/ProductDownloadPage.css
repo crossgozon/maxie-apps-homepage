@@ -10,6 +10,11 @@
   text-align: center;
 }
 
+.product-download-icon {
+  border-radius: 14px;
+  margin-bottom: 20px;
+}
+
 .product-download-eyebrow {
   display: inline-block;
   color: var(--accent);

@@ -16,6 +16,7 @@ export function ProductDownloadPage() {
   return (
     <ThemeScope theme={product.theme} as="main" className="product-download-page">
       <div className="product-download-hero">
+        <img src={product.iconUrl} alt="" width={64} height={64} className="product-download-icon" />
         <span className="product-download-eyebrow">{product.tagline}</span>
         <h1>{product.name}</h1>
         <p>{product.description}</p>

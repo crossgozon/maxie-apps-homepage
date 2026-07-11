@@ -9,6 +9,7 @@ export interface ProductConfig {
   tagline: string;
   description: string;
   theme: ThemeId;
+  iconUrl: string;
   release: ProductReleaseConfig;
 }
 
@@ -20,6 +21,7 @@ export const products: Record<ProductSlug, ProductConfig> = {
     description:
       "MaxClicker is a lightweight Windows tool for fast, reliable automated clicking, built for games and repetitive tasks that demand consistent timing.",
     theme: "maxclicker",
+    iconUrl: "/assets/maxclicker/icon.png",
     release: {
       repo: "crossgozon/maxclicker-download",
       assetNameRegex: /^Maxclicker\..+\.zip$/i,
@@ -35,6 +37,7 @@ export const products: Record<ProductSlug, ProductConfig> = {
     description:
       "MaxMacro is a desktop macro and input binding workspace, built for precise timing, repeatable input sequences, and focused practice.",
     theme: "maxmacro",
+    iconUrl: "/assets/maxmacro/icon.png",
     release: {
       repo: "crossgozon/maxmacro-download",
       assetNameRegex: /^Maxmacro\..+\.zip$/i,
