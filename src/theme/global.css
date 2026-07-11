@@ -1,0 +1,65 @@
+@font-face {
+  font-family: "Rajdhani";
+  src: url("/assets/maxclicker/Rajdhani-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  color: var(--text);
+  background: var(--bg-0);
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Rajdhani", "Segoe UI", sans-serif;
+  font-weight: 700;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Temporary Phase 1 verification layout; replaced by real Layout/Home components later. */
+.phase1-shell {
+  min-height: 100vh;
+  padding: 40px;
+}
+
+.phase1-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.phase1-card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.phase1-card h2 {
+  color: var(--accent);
+}
