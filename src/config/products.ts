@@ -1,4 +1,5 @@
 import type { ThemeId } from "../theme/themes";
+import type { ProductReleaseConfig } from "../services/releaseFetcher";
 
 export type ProductSlug = "maxclicker" | "maxmacro";
 
@@ -8,7 +9,7 @@ export interface ProductConfig {
   tagline: string;
   description: string;
   theme: ThemeId;
-  // Release-fetching fields are added in Phase 3.
+  release: ProductReleaseConfig;
 }
 
 export const products: Record<ProductSlug, ProductConfig> = {
@@ -19,6 +20,13 @@ export const products: Record<ProductSlug, ProductConfig> = {
     description:
       "MaxClicker is a lightweight Windows tool for fast, reliable automated clicking, built for games and repetitive tasks that demand consistent timing.",
     theme: "maxclicker",
+    release: {
+      repo: "crossgozon/maxclicker-download",
+      assetNameRegex: /^Maxclicker\..+\.zip$/i,
+      excludeAssetRegex: /updater/i,
+      mirrorCommentTag: "MAXCLICKER_RELEASE_MIRRORS",
+      mirrorPathSegment: "maxclicker",
+    },
   },
   maxmacro: {
     slug: "maxmacro",
@@ -27,6 +35,13 @@ export const products: Record<ProductSlug, ProductConfig> = {
     description:
       "MaxMacro is a desktop macro and input binding workspace, built for precise timing, repeatable input sequences, and focused practice.",
     theme: "maxmacro",
+    release: {
+      repo: "crossgozon/maxmacro-download",
+      assetNameRegex: /^Maxmacro\..+\.zip$/i,
+      excludeAssetRegex: /updater/i,
+      mirrorCommentTag: "MAXMACRO_RELEASE_MIRRORS",
+      mirrorPathSegment: "maxmacro",
+    },
   },
 };
 
