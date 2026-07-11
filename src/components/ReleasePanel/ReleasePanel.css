@@ -1,0 +1,102 @@
+.release-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.release-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.release-meta > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.release-meta-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.release-meta strong {
+  color: var(--text);
+  font-size: 15px;
+}
+
+.release-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.release-notes {
+  margin-top: 20px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.release-notes summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.release-notes pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--muted);
+  font-size: 13px;
+  font-family: inherit;
+  margin-top: 12px;
+}
+
+.release-panel-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.release-skeleton-line {
+  height: 14px;
+  border-radius: 6px;
+  background: var(--line);
+  animation: release-pulse 1.2s ease-in-out infinite;
+}
+
+.release-skeleton-button {
+  height: 40px;
+  width: 180px;
+  margin-top: 8px;
+}
+
+@keyframes release-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.release-panel-error,
+.release-panel-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.release-panel-error p,
+.release-panel-empty p {
+  color: var(--muted);
+  margin: 0;
+}

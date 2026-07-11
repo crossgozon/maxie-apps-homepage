@@ -58,10 +58,21 @@ export async function fetchLatestRelease(config: ProductReleaseConfig): Promise<
     assetName: packageAsset.name,
     assetSizeBytes: packageAsset.size || 0,
     assetUrl: packageAsset.browser_download_url,
-    notes: release.body,
+    notes: stripMirrorComment(release.body, config.mirrorCommentTag),
     releasePageUrl: release.html_url,
     mirror: findMirror(release, config),
   };
+}
+
+/** Removes the hidden mirror-JSON comment so it never leaks into displayed release notes. */
+function stripMirrorComment(body: string | null, tag: string): string | null {
+  if (!body) {
+    return body;
+  }
+
+  const pattern = new RegExp(`<!--\\s*${tag}\\s*[\\s\\S]*?\\s*${tag}\\s*-->`, "i");
+  const stripped = body.replace(pattern, "").trim();
+  return stripped || null;
 }
 
 function parseReleaseMirrors(release: GithubRelease, config: ProductReleaseConfig): ReleaseMirror[] {
