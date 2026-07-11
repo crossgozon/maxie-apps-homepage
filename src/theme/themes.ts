@@ -49,23 +49,21 @@ export const themes: Record<ThemeId, ThemeVars> = {
     "--accent-2-rgb": "255, 106, 61",
     "--success": "#20d89a",
   },
-  // Sampled directly from the real MaXPerformance app screenshots (dark
-  // navy chrome, cyan/blue as the primary interactive accent, amber as the
-  // secondary) - the app's UI itself is blue-cyan, not crimson, even though
-  // the logo's "X" is red.
+  // The background art is already cyan-heavy, so the UI chrome uses graphite
+  // and violet/amber accents instead of repeating the same teal everywhere.
   maxperformance: {
-    "--bg-0": "#0c1017",
-    "--bg-1": "#101721",
-    "--bg-2": "#1a2432",
-    "--panel": "rgba(16, 23, 33, 0.88)",
-    "--line": "rgba(57, 183, 255, 0.2)",
-    "--text": "#eef4fb",
-    "--muted": "#8fa3b8",
-    "--accent": "#39b7ff",
-    "--accent-2": "#f0b85a",
-    "--accent-rgb": "57, 183, 255",
-    "--accent-2-rgb": "240, 184, 90",
-    "--success": "#29c46d",
+    "--bg-0": "#08090f",
+    "--bg-1": "#11111a",
+    "--bg-2": "#191322",
+    "--panel": "rgba(18, 17, 28, 0.94)",
+    "--line": "rgba(167, 139, 250, 0.24)",
+    "--text": "#f3f5ff",
+    "--muted": "#b9bdd2",
+    "--accent": "#a78bfa",
+    "--accent-2": "#f2b84b",
+    "--accent-rgb": "167, 139, 250",
+    "--accent-2-rgb": "242, 184, 75",
+    "--success": "#45d483",
   },
   // Neutral chrome (nav/footer) sits outside either product identity so it
   // doesn't visually compete with whichever theme a page section is showing.

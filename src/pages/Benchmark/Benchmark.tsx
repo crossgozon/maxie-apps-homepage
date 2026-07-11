@@ -48,6 +48,7 @@ export function Benchmark() {
 
   return (
     <ThemeScope theme="maxperformance" as="main" className="benchmark-page">
+      <div className="benchmark-page-bg" aria-hidden="true" />
       <div className="benchmark-hero gv-fade-up">
         <img src="/assets/maxperformance/header_title.png" alt="MAXPERFORMANCE" className="benchmark-wordmark" />
         <p className="benchmark-description">
@@ -89,7 +90,10 @@ export function Benchmark() {
           a visual cue that this button leads over to MaxMacro's page. */}
       <ThemeScope theme="maxmacro" as="section" className="benchmark-cta gv-fade-up">
         <img src="/assets/maxmacro/icon.png" alt="" width={40} height={40} className="benchmark-cta-icon" />
-        <p>MAXPERFORMANCE ships as a companion tool alongside MaxMacro.</p>
+        <p>
+          MAXPERFORMANCE isn't a separate download —<br />
+          it comes bundled with MaxMacro.
+        </p>
         <Link to="/maxmacro" className="btn btn-primary">
           Get MaxMacro →
         </Link>

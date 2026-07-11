@@ -1,4 +1,10 @@
 .nav-header {
+  /* Amber/gold sampled directly from the Maxie Apps logo's own trim
+     (maxie-apps_title_header.png) - used for the active-page indicator so
+     it ties back to the actual brand mark instead of the neutral theme's
+     flat gray accent, which barely read as an "active" color at all. */
+  --nav-gold: #f0b85a;
+  --nav-gold-rgb: 240, 184, 90;
   position: sticky;
   top: 0;
   background: rgba(14, 16, 21, 0.72);
@@ -153,7 +159,7 @@
   right: 0;
   bottom: 0;
   height: 2px;
-  background: var(--accent);
+  background: var(--nav-gold);
   border-radius: 2px;
   transform: scaleX(0);
   transform-origin: center;
@@ -169,13 +175,13 @@
 }
 
 .nav-link-active {
-  color: var(--text);
-  text-shadow: 0 0 16px rgba(var(--accent-rgb), 0.5);
+  color: var(--nav-gold);
+  text-shadow: 0 0 16px rgba(var(--nav-gold-rgb), 0.5);
 }
 
 .nav-link-active::after {
   transform: scaleX(1);
-  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.7);
+  box-shadow: 0 0 10px rgba(var(--nav-gold-rgb), 0.7);
 }
 
 @media (max-width: 720px) {
@@ -220,6 +226,6 @@
   }
 
   .nav-link-active {
-    border-left-color: var(--accent);
+    border-left-color: var(--nav-gold);
   }
 }

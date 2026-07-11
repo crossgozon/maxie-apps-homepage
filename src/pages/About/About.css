@@ -6,31 +6,22 @@
   padding: 64px 24px 90px;
 }
 
-/* Same ambient-glow device used on the Home page, so About doesn't read as
-   a plain, unstyled text page next to the rest of the site. */
-.about-hero-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-  pointer-events: none;
+/* Full-page backdrop, fixed to the actual viewport (not just a short band
+   behind the hero) - the image's own aspect ratio (1672x941, ~16:9) is
+   close to a real screen's, so covering the whole viewport crops it far
+   less aggressively than the earlier short/wide band did, which was
+   cropping out the blue/red confluence in the middle of the image. Fixed
+   positioning also means it stays put as the page scrolls, instead of
+   scrolling away after the hero. */
+.about-page-bg {
+  position: fixed;
+  inset: 0;
+  background-image: url(/assets/about_background.jpg);
+  background-size: cover;
+  background-position: center;
   opacity: 0.22;
+  pointer-events: none;
   z-index: 0;
-}
-
-.about-hero-orb-blue {
-  top: -40px;
-  left: -60px;
-  width: 320px;
-  height: 320px;
-  background: radial-gradient(circle, rgba(33, 167, 227, 0.5), transparent 70%);
-}
-
-.about-hero-orb-red {
-  top: 60px;
-  right: -80px;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(185, 28, 43, 0.45), transparent 70%);
 }
 
 .about-intro {
@@ -47,18 +38,6 @@
   height: auto;
   margin-bottom: 8px;
   filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.55));
-}
-
-.about-eyebrow {
-  display: inline-block;
-  font-family: "Rajdhani", sans-serif;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--accent);
-  text-shadow: 0 0 16px rgba(var(--accent-rgb), 0.4);
-  margin-bottom: 14px;
 }
 
 .about-intro h1 {

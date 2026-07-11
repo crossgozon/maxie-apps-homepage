@@ -1,15 +1,12 @@
+/* No margin-top here on purpose - every page already ends with its own
+   generous bottom padding (System Requirements, the MaxPerformance CTA
+   card, etc.), so an extra margin on top of that just left an
+   inconsistent, disconnected-looking empty band before the footer's
+   glowing divider on every page except Home (which had its own override
+   for this same reason). Flush on every page now, consistently. */
 .site-footer {
   position: relative;
   background: var(--bg-1);
-  margin-top: 40px;
-}
-
-/* The Home page's split-hero already fills the full viewport height on its
-   own - the standard 40px gap above leaves an empty band between it and
-   the footer's glowing divider, instead of the footer sitting flush
-   against it. */
-.page-transition-home + .site-footer {
-  margin-top: 0;
 }
 
 /* Same HUD-style glowing divider as the header, so the chrome that bookends

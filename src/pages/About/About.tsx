@@ -24,12 +24,10 @@ export function About() {
 
   return (
     <main className="about-page">
-      <div className="about-hero-orb about-hero-orb-blue" aria-hidden="true" />
-      <div className="about-hero-orb about-hero-orb-red" aria-hidden="true" />
+      <div className="about-page-bg" aria-hidden="true" />
 
       <section className="about-intro gv-fade-up">
         <img src="/assets/maxie-badge.png" alt="" className="about-badge" aria-hidden="true" />
-        <span className="about-eyebrow">Maxie Apps</span>
         <h1>Tools built for precision.</h1>
         <p>
           Maxie Apps is the publisher behind MaxClicker, an auto-potion and macro automation tool for MU
@@ -44,7 +42,7 @@ export function About() {
           <ThemeScope key={product.slug} theme={product.theme} className="about-product gv-fade-up">
             <div
               className="about-product-bg"
-              style={{ backgroundImage: `url(/assets/${product.slug}/background.png)` }}
+              style={{ backgroundImage: `url(/assets/${product.slug}/background.jpg)` }}
               aria-hidden="true"
             />
             <img src={product.iconUrl} alt="" width={52} height={52} className="about-product-icon" />

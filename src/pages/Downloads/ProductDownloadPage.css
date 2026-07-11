@@ -15,7 +15,8 @@
   height: 640px;
   background-size: cover;
   background-position: center 30%;
-  opacity: 0.4;
+  opacity: 0.72;
+  filter: saturate(1.14) contrast(1.06) brightness(1.08);
   -webkit-mask-image: linear-gradient(180deg, black, transparent);
   mask-image: linear-gradient(180deg, black, transparent);
   pointer-events: none;
@@ -27,7 +28,7 @@
   position: absolute;
   inset: 0;
   height: 640px;
-  background: linear-gradient(180deg, rgba(4, 6, 10, 0.15), var(--bg-0) 92%);
+  background: linear-gradient(180deg, rgba(4, 6, 10, 0.04), rgba(4, 6, 10, 0.08) 42%, var(--bg-0) 96%);
   pointer-events: none;
   z-index: 0;
 }
