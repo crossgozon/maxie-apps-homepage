@@ -15,13 +15,10 @@ interface ReleasePanelProps {
 export function ReleasePanel({ product, showNotes = false }: ReleasePanelProps) {
   const state = useLatestRelease(product.release);
 
-  // Buttons render immediately and are clickable right away, pointed at the
-  // GitHub releases page as a working fallback - the release API (slow, and
-  // occasionally rate-limited) is only there to upgrade them in place to the
-  // exact per-version asset + mirror once it resolves, so the user is never
-  // stuck staring at empty space or a dead button while it loads.
+  // Buttons render immediately for layout stability, but stay disabled until
+  // the exact per-version asset URL resolves. We intentionally avoid sending
+  // download clicks to the GitHub release page.
   if (state.status === "loading") {
-    const fallbackUrl = `https://github.com/${product.release.repo}/releases/latest`;
     return (
       <div className="release-panel release-panel-loading" aria-live="polite">
         <div className="release-stats">
@@ -29,8 +26,8 @@ export function ReleasePanel({ product, showNotes = false }: ReleasePanelProps) 
           <div className="release-skeleton-line release-skeleton-stat" />
         </div>
         <div className="release-actions">
-          <DownloadButton url={fallbackUrl} label={`Download ${product.name}`} kind="github" pending />
-          <DownloadButton url={fallbackUrl} label="Mirror Download" kind="mirror" pending />
+          <DownloadButton url="" label={`Download ${product.name}`} kind="github" pending disabled />
+          <DownloadButton url="" label="Mirror Download" kind="mirror" pending disabled />
         </div>
       </div>
     );
@@ -39,15 +36,7 @@ export function ReleasePanel({ product, showNotes = false }: ReleasePanelProps) 
   if (state.status === "error") {
     return (
       <div className="release-panel release-panel-error" role="alert">
-        <p>Could not read the latest release right now. Check back later or view it directly on GitHub.</p>
-        <a
-          className="btn btn-secondary"
-          href={`https://github.com/${product.release.repo}/releases/latest`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View on GitHub
-        </a>
+        <p>Could not read the latest release right now. Check back later.</p>
       </div>
     );
   }
@@ -56,14 +45,6 @@ export function ReleasePanel({ product, showNotes = false }: ReleasePanelProps) 
     return (
       <div className="release-panel release-panel-empty">
         <p>No {product.name} release has been published yet. Check back soon.</p>
-        <a
-          className="btn btn-secondary"
-          href={`https://github.com/${product.release.repo}/releases`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View releases on GitHub
-        </a>
       </div>
     );
   }

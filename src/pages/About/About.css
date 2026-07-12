@@ -34,7 +34,7 @@
 }
 
 .about-badge {
-  width: min(50%, 190px);
+  width: min(50%, 360px);
   height: auto;
   margin-bottom: 8px;
   filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.55));

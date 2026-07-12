@@ -12,9 +12,14 @@ import "./Home.css";
 // and holding off on mounting the animated content until they're actually
 // ready means "mount = animate" stays true - the reveal only plays once
 // there's something real to reveal.
+// MaxPerformance is a sub-application (a companion benchmarking tool, not a
+// main app on its own), so it's excluded from the Home page's two-door
+// split hero - that layout is built for exactly two peer apps.
+const mainApps = productList.filter((product) => product.slug !== "maxperformance");
+
 function getHeroImageUrls(): string[] {
   const urls = ["/assets/maxie-badge.png"];
-  for (const product of productList) {
+  for (const product of mainApps) {
     urls.push(product.iconUrl);
     if (product.wordmarkUrl) urls.push(product.wordmarkUrl);
   }
@@ -54,7 +59,7 @@ export function Home() {
       <div className="home-hero-orb home-hero-orb-amber" aria-hidden="true" />
 
       <section className="home-split">
-        {productList.map((product, index) => (
+        {mainApps.map((product, index) => (
           <ThemeScope
             key={product.slug}
             theme={product.theme}

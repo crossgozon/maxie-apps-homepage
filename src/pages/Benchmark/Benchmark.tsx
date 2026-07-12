@@ -10,6 +10,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { ThemeScope } from "../../theme/ThemeProvider";
 import { Lightbox, type LightboxImage } from "../../components/Lightbox/Lightbox";
+import { ReleasePanel } from "../../components/ReleasePanel/ReleasePanel";
+import { products } from "../../config/products";
 import "../../components/common/Button.css";
 import "./Benchmark.css";
 
@@ -56,6 +58,7 @@ export function Benchmark() {
           accuracy, and compares runs side by side - so you know exactly how your macro setup performs,
           instead of guessing.
         </p>
+        <ReleasePanel product={products.maxperformance} />
       </div>
 
       <section className="benchmark-highlights">
@@ -87,12 +90,11 @@ export function Benchmark() {
       </section>
 
       {/* MaxMacro's own crimson theme on purpose, not the page's blue -
-          a visual cue that this button leads over to MaxMacro's page. */}
+          a visual cue that this link leads over to MaxMacro's page. */}
       <ThemeScope theme="maxmacro" as="section" className="benchmark-cta gv-fade-up">
         <img src="/assets/maxmacro/icon.png" alt="" width={40} height={40} className="benchmark-cta-icon" />
         <p>
-          MAXPERFORMANCE is its own download —<br />
-          built by the same team behind MaxMacro.
+          Built by the same team behind MaxMacro.
         </p>
         <Link to="/maxmacro" className="btn btn-primary">
           Get MaxMacro →

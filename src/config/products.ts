@@ -24,18 +24,25 @@ import type { ProductReleaseConfig } from "../services/releaseFetcher";
 // below, instead of the repo name being hardcoded in multiple places.
 const MAXCLICKER_REPO = import.meta.env.VITE_MAXCLICKER_REPO || "crossgozon/maxclicker-download";
 const MAXMACRO_REPO = import.meta.env.VITE_MAXMACRO_REPO || "crossgozon/maxmacro-download";
+const MAXPERFORMANCE_REPO = import.meta.env.VITE_MAXPERFORMANCE_REPO || "crossgozon/maxperformance-download";
 const MAXCLICKER_REMOTE_CONFIG_URL =
   import.meta.env.VITE_MAXCLICKER_REMOTE_CONFIG_URL ||
   "https://api.maxie-apps.online/api/remote-config";
 const MAXMACRO_REMOTE_CONFIG_URL =
   import.meta.env.VITE_MAXMACRO_REMOTE_CONFIG_URL ||
   "https://api.maxmacro.maxie-apps.online/api/remote-config";
+// MaxPerformance has no dedicated Worker subdomain (unlike MaxMacro) - it
+// shares MaxClicker's api.maxie-apps.online Worker, disambiguated by the
+// ?appId= query param the Worker already reads (see resolveRequestAppIdOverride).
+const MAXPERFORMANCE_REMOTE_CONFIG_URL =
+  import.meta.env.VITE_MAXPERFORMANCE_REMOTE_CONFIG_URL ||
+  "https://api.maxie-apps.online/api/remote-config?appId=maxperformance";
 
 function rawGithubUrl(repo: string, path: string) {
   return `https://raw.githubusercontent.com/${repo}/main/${path}`;
 }
 
-export type ProductSlug = "maxclicker" | "maxmacro";
+export type ProductSlug = "maxclicker" | "maxmacro" | "maxperformance";
 
 export interface ProductFeature {
   title: string;
@@ -116,6 +123,7 @@ export const products: Record<ProductSlug, ProductConfig> = {
         title: "Tray integration & startup options",
         description: "Launch at Windows startup, start minimized to tray, and choose whether minimize/close send the app to the tray instead of closing it.",
         icon: faDesktop,
+        images: [{ src: "/assets/maxclicker/screenshots/settings.png", caption: "Settings" }],
       },
       {
         title: "Run diagnostics",
@@ -241,6 +249,30 @@ export const products: Record<ProductSlug, ProductConfig> = {
       excludeAssetRegex: /updater/i,
       mirrorCommentTag: "MAXMACRO_RELEASE_MIRRORS",
       mirrorUrlPattern: /^https:\/\/backblaze\.maxmacro\.maxie-apps\.online\/maxmacro\/Release\/[^/]+\/[^/]+\.zip$/i,
+    },
+  },
+  // MaxPerformance's own page (src/pages/Benchmark) renders its own hero/
+  // highlight layout rather than going through ProductDownloadPage, so this
+  // entry only needs to carry what ReleasePanel actually reads (name,
+  // release config) - features/systemRequirements stay empty on purpose.
+  maxperformance: {
+    slug: "maxperformance",
+    name: "MaxPerformance",
+    tagline: "Official Build",
+    description:
+      "MaxPerformance captures real keyboard and mouse input timing, scores stability and warm-up accuracy, and compares runs side by side.",
+    heroHook:
+      "Millisecond-precise input capture and side-by-side run comparison, built for tuning macro timing.",
+    theme: "maxperformance",
+    iconUrl: "/assets/maxperformance/icon.png",
+    wordmarkUrl: "/assets/maxperformance/header_title.png",
+    features: [],
+    release: {
+      repo: MAXPERFORMANCE_REPO,
+      remoteConfigUrls: [MAXPERFORMANCE_REMOTE_CONFIG_URL],
+      assetNameRegex: /^MaxPerformance\..+\.zip$/i,
+      mirrorCommentTag: "MAXPERFORMANCE_RELEASE_MIRRORS",
+      mirrorUrlPattern: /^https:\/\/backblaze\.maxie-apps\.online\/maxperformance\/Release\/[^/]+\/[^/]+\.zip$/i,
     },
   },
 };

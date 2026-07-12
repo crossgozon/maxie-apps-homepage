@@ -15,6 +15,7 @@ interface DownloadButtonProps {
    * instead of navigating to it).
    */
   pending?: boolean;
+  disabled?: boolean;
 }
 
 /**
@@ -26,7 +27,7 @@ interface DownloadButtonProps {
 /** How long a click made while still pending waits for the real URL before giving up and using the fallback. */
 const CLICK_GRACE_MS = 4000;
 
-export function DownloadButton({ url, fileName, label, kind, pending = false }: DownloadButtonProps) {
+export function DownloadButton({ url, fileName, label, kind, pending = false, disabled = false }: DownloadButtonProps) {
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [blobFailed, setBlobFailed] = useState(false);
   const [awaiting, setAwaiting] = useState(false);
@@ -39,7 +40,7 @@ export function DownloadButton({ url, fileName, label, kind, pending = false }: 
   // click against it, only falling back if the API genuinely doesn't
   // resolve in time.
   useEffect(() => {
-    if (!awaiting) {
+    if (!awaiting || disabled) {
       return;
     }
 
@@ -55,9 +56,14 @@ export function DownloadButton({ url, fileName, label, kind, pending = false }: 
     }, CLICK_GRACE_MS);
 
     return () => clearTimeout(timer);
-  }, [awaiting, pending, url]);
+  }, [awaiting, pending, url, disabled]);
 
   function handleClick(event: React.MouseEvent<HTMLAnchorElement>) {
+    if (disabled) {
+      event.preventDefault();
+      return;
+    }
+
     if (!pending || awaiting) {
       return;
     }
@@ -66,7 +72,7 @@ export function DownloadButton({ url, fileName, label, kind, pending = false }: 
   }
 
   useEffect(() => {
-    if (pending) {
+    if (pending || disabled) {
       return;
     }
 
@@ -102,19 +108,20 @@ export function DownloadButton({ url, fileName, label, kind, pending = false }: 
         revokeRef.current = null;
       }
     };
-  }, [url, pending]);
+  }, [url, pending, disabled]);
 
   return (
     <a
       ref={anchorRef}
       className={`dl-button dl-button-${kind}`}
-      href={pending ? url : blobUrl ?? url}
-      download={pending ? undefined : fileName}
-      target={pending ? "_blank" : undefined}
-      rel={pending ? "noopener noreferrer" : "noopener"}
+      href={disabled ? undefined : blobUrl ?? url}
+      download={pending || disabled ? undefined : fileName}
+      rel="noopener"
       onClick={handleClick}
       aria-busy={awaiting || undefined}
+      aria-disabled={disabled || undefined}
       data-pending={pending ? "1" : undefined}
+      data-disabled={disabled ? "1" : undefined}
       data-awaiting={awaiting ? "1" : undefined}
       data-blob-ready={blobUrl ? "1" : undefined}
       data-blob-failed={blobFailed ? "1" : undefined}

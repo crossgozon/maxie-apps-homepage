@@ -41,17 +41,23 @@ export function Nav() {
             <FontAwesomeIcon icon={faHouse} />
             Home
           </NavLink>
-          {productList.map((product) => (
-            <NavLink
-              key={product.slug}
-              to={`/${product.slug}`}
-              className={navLinkClass}
-              onClick={() => setMenuOpen(false)}
-            >
-              <FontAwesomeIcon icon={faGamepad} />
-              {product.name}
-            </NavLink>
-          ))}
+          {/* MaxPerformance is deliberately excluded here - it has its own
+              dedicated link below (chart icon fits it better than the
+              gamepad icon used for the automation apps), so including it
+              in this product-registry map would render it twice. */}
+          {productList
+            .filter((product) => product.slug !== "maxperformance")
+            .map((product) => (
+              <NavLink
+                key={product.slug}
+                to={`/${product.slug}`}
+                className={navLinkClass}
+                onClick={() => setMenuOpen(false)}
+              >
+                <FontAwesomeIcon icon={faGamepad} />
+                {product.name}
+              </NavLink>
+            ))}
           <NavLink to="/maxperformance" className={navLinkClass} onClick={() => setMenuOpen(false)}>
             <FontAwesomeIcon icon={faChartLine} />
             MaxPerformance

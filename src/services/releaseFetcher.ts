@@ -154,7 +154,7 @@ function parseRemoteDownloadConfig(remoteConfig: RemoteDownloadConfig, config: P
     assetSizeBytes,
     assetUrl,
     notes: null,
-    releasePageUrl: String(remoteConfig.downloadPageUrl || "").trim() || `https://github.com/${config.repo}/releases/latest`,
+    releasePageUrl: String(remoteConfig.downloadPageUrl || "").trim(),
     mirror: findRemoteMirror(remoteConfig, config),
   };
 }
