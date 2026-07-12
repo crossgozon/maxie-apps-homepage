@@ -15,12 +15,23 @@ interface ReleasePanelProps {
 export function ReleasePanel({ product, showNotes = false }: ReleasePanelProps) {
   const state = useLatestRelease(product.release);
 
+  // Buttons render immediately and are clickable right away, pointed at the
+  // GitHub releases page as a working fallback - the release API (slow, and
+  // occasionally rate-limited) is only there to upgrade them in place to the
+  // exact per-version asset + mirror once it resolves, so the user is never
+  // stuck staring at empty space or a dead button while it loads.
   if (state.status === "loading") {
+    const fallbackUrl = `https://github.com/${product.release.repo}/releases/latest`;
     return (
       <div className="release-panel release-panel-loading" aria-live="polite">
-        <div className="release-skeleton-line" style={{ width: "40%" }} />
-        <div className="release-skeleton-line" style={{ width: "70%" }} />
-        <div className="release-skeleton-line release-skeleton-button" />
+        <div className="release-stats">
+          <div className="release-skeleton-line release-skeleton-stat" />
+          <div className="release-skeleton-line release-skeleton-stat" />
+        </div>
+        <div className="release-actions">
+          <DownloadButton url={fallbackUrl} label={`Download ${product.name}`} kind="github" pending />
+          <DownloadButton url={fallbackUrl} label="Mirror Download" kind="mirror" pending />
+        </div>
       </div>
     );
   }

@@ -91,8 +91,8 @@ export function Benchmark() {
       <ThemeScope theme="maxmacro" as="section" className="benchmark-cta gv-fade-up">
         <img src="/assets/maxmacro/icon.png" alt="" width={40} height={40} className="benchmark-cta-icon" />
         <p>
-          MAXPERFORMANCE isn't a separate download —<br />
-          it comes bundled with MaxMacro.
+          MAXPERFORMANCE is its own download —<br />
+          built by the same team behind MaxMacro.
         </p>
         <Link to="/maxmacro" className="btn btn-primary">
           Get MaxMacro →

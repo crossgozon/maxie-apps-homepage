@@ -3,9 +3,18 @@ import "./DownloadButton.css";
 
 interface DownloadButtonProps {
   url: string;
-  fileName: string;
+  fileName?: string;
   label: string;
   kind: "github" | "mirror";
+  /**
+   * True while the real per-version asset URL is still being resolved from
+   * the release API. The button still renders and is clickable right away -
+   * `url` is a working fallback link (e.g. the GitHub releases page) - it
+   * just isn't the direct file yet, so no blob preload runs and no
+   * `download` attribute is set (that would save the fallback page itself
+   * instead of navigating to it).
+   */
+  pending?: boolean;
 }
 
 /**
@@ -14,12 +23,53 @@ interface DownloadButtonProps {
  * direct URL (still a real, working download) if the preload fails for any
  * reason - the button is never dead.
  */
-export function DownloadButton({ url, fileName, label, kind }: DownloadButtonProps) {
+/** How long a click made while still pending waits for the real URL before giving up and using the fallback. */
+const CLICK_GRACE_MS = 4000;
+
+export function DownloadButton({ url, fileName, label, kind, pending = false }: DownloadButtonProps) {
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [blobFailed, setBlobFailed] = useState(false);
+  const [awaiting, setAwaiting] = useState(false);
   const revokeRef = useRef<string | null>(null);
+  const anchorRef = useRef<HTMLAnchorElement>(null);
+
+  // If the user clicks while `pending` is still true, hold the click instead
+  // of letting it fall through to the fallback URL immediately - wait a
+  // short grace period for the real per-version URL to arrive and replay the
+  // click against it, only falling back if the API genuinely doesn't
+  // resolve in time.
+  useEffect(() => {
+    if (!awaiting) {
+      return;
+    }
+
+    if (!pending) {
+      setAwaiting(false);
+      anchorRef.current?.click();
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setAwaiting(false);
+      window.open(url, "_blank", "noopener,noreferrer");
+    }, CLICK_GRACE_MS);
+
+    return () => clearTimeout(timer);
+  }, [awaiting, pending, url]);
+
+  function handleClick(event: React.MouseEvent<HTMLAnchorElement>) {
+    if (!pending || awaiting) {
+      return;
+    }
+    event.preventDefault();
+    setAwaiting(true);
+  }
 
   useEffect(() => {
+    if (pending) {
+      return;
+    }
+
     let cancelled = false;
     setBlobUrl(null);
     setBlobFailed(false);
@@ -52,32 +102,29 @@ export function DownloadButton({ url, fileName, label, kind }: DownloadButtonPro
         revokeRef.current = null;
       }
     };
-  }, [url]);
+  }, [url, pending]);
 
   return (
     <a
+      ref={anchorRef}
       className={`dl-button dl-button-${kind}`}
-      href={blobUrl ?? url}
-      download={fileName}
-      rel="noopener"
+      href={pending ? url : blobUrl ?? url}
+      download={pending ? undefined : fileName}
+      target={pending ? "_blank" : undefined}
+      rel={pending ? "noopener noreferrer" : "noopener"}
+      onClick={handleClick}
+      aria-busy={awaiting || undefined}
+      data-pending={pending ? "1" : undefined}
+      data-awaiting={awaiting ? "1" : undefined}
       data-blob-ready={blobUrl ? "1" : undefined}
       data-blob-failed={blobFailed ? "1" : undefined}
     >
-      <span>{label}</span>
+      <span>{awaiting ? "Preparing…" : label}</span>
+      {pending && !awaiting && <span className="dl-button-caption">Preparing exact version…</span>}
       {kind === "github" ? (
         <img className="dl-mark dl-mark-github" src="/assets/maxclicker/github_logo_cropped.png" alt="" loading="lazy" decoding="async" />
       ) : (
-        <img
-          className="dl-mark dl-mark-backblaze"
-          src="https://secure.backblaze.com/bzapp_web_assets/public/scripts/3b562092dff3aa9cd10215e0d762f6e3.svg"
-          alt=""
-          loading="lazy"
-          decoding="async"
-          referrerPolicy="no-referrer"
-          onError={(e) => {
-            e.currentTarget.style.display = "none";
-          }}
-        />
+        <img className="dl-mark dl-mark-backblaze" src="/assets/common/backblaze_logo.svg" alt="" loading="lazy" decoding="async" />
       )}
     </a>
   );

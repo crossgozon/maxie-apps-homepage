@@ -26,7 +26,7 @@ const MAXCLICKER_REPO = import.meta.env.VITE_MAXCLICKER_REPO || "crossgozon/maxc
 const MAXMACRO_REPO = import.meta.env.VITE_MAXMACRO_REPO || "crossgozon/maxmacro-download";
 const MAXCLICKER_REMOTE_CONFIG_URL =
   import.meta.env.VITE_MAXCLICKER_REMOTE_CONFIG_URL ||
-  "https://raw.githubusercontent.com/crossgozon/domains/main/maxclicker/config.json";
+  "https://api.maxie-apps.online/api/remote-config";
 const MAXMACRO_REMOTE_CONFIG_URL =
   import.meta.env.VITE_MAXMACRO_REMOTE_CONFIG_URL ||
   "https://api.maxmacro.maxie-apps.online/api/remote-config";
@@ -119,7 +119,7 @@ export const products: Record<ProductSlug, ProductConfig> = {
       },
       {
         title: "Run diagnostics",
-        description: "Every run logs a summary - mode, target, run time, sent presses, average/worst loop delay, and stability - so you know your automation is behaving correctly.",
+        description: "Every run saves a local diagnostic log - mode, target, run time, sent presses, average/worst loop delay, and stability - so support can help troubleshoot quickly if something looks off.",
         icon: faChartLine,
       },
     ],
@@ -207,8 +207,8 @@ export const products: Record<ProductSlug, ProductConfig> = {
       },
       // Binds
       {
-        title: "KeySurface keyboard mapping",
-        description: "A visual, full-size keyboard surface for binding actions to physical keys, so you can see your whole layout at a glance - works with any keyboard, any layout.",
+        title: "Full keyboard mapping",
+        description: "A visual, full-size keyboard layout for binding actions to physical keys, so you can see your whole layout at a glance. It covers the standard keys every keyboard has - letters, numbers, function keys, modifiers, and more. Special extra keys that only exist on certain keyboard brands aren't covered.",
         icon: faLayerGroup,
         images: [{ src: "/assets/maxmacro/features/KEYBOARD BINDING.png", caption: "Keyboard Binding" }],
       },

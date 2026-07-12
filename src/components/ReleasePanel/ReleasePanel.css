@@ -71,25 +71,17 @@
   margin-top: 14px;
 }
 
-.release-panel-loading {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
 .release-skeleton-line {
-  height: 16px;
   border-radius: 8px;
   background: linear-gradient(90deg, var(--line), rgba(255, 255, 255, 0.14), var(--line));
   background-size: 200% 100%;
   animation: release-pulse 1.4s ease-in-out infinite;
 }
 
-.release-skeleton-button {
-  height: 46px;
-  width: 200px;
-  border-radius: 14px;
-  margin-top: 8px;
+.release-skeleton-stat {
+  height: 28px;
+  width: 96px;
+  border-radius: 6px;
 }
 
 @keyframes release-pulse {

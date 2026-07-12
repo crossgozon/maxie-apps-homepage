@@ -26,6 +26,11 @@ interface RemoteDownloadConfig {
   downloadPageUrl?: unknown;
   downloadUrl?: unknown;
   publicDownloadMirrors?: unknown;
+  /** Injected server-side from the release ZIP's own R2 object metadata - absent if that lookup failed. */
+  release?: {
+    publishedAt?: unknown;
+    sizeBytes?: unknown;
+  };
 }
 
 export class ReleaseFetchError extends Error {
@@ -135,11 +140,18 @@ function parseRemoteDownloadConfig(remoteConfig: RemoteDownloadConfig, config: P
     return null;
   }
 
+  const publishedAtRaw = String(remoteConfig.release?.publishedAt || "").trim();
+  const publishedAtDate = publishedAtRaw ? new Date(publishedAtRaw) : null;
+  const publishedAt = publishedAtDate && !Number.isNaN(publishedAtDate.getTime()) ? publishedAtDate.toISOString() : null;
+
+  const sizeBytesRaw = Number(remoteConfig.release?.sizeBytes);
+  const assetSizeBytes = Number.isFinite(sizeBytesRaw) && sizeBytesRaw > 0 ? sizeBytesRaw : null;
+
   return {
     version,
-    publishedAt: null,
+    publishedAt,
     assetName,
-    assetSizeBytes: null,
+    assetSizeBytes,
     assetUrl,
     notes: null,
     releasePageUrl: String(remoteConfig.downloadPageUrl || "").trim() || `https://github.com/${config.repo}/releases/latest`,

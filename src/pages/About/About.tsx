@@ -30,10 +30,10 @@ export function About() {
         <img src="/assets/maxie-badge.png" alt="" className="about-badge" aria-hidden="true" />
         <h1>Tools built for precision.</h1>
         <p>
-          Maxie Apps is the publisher behind MaxClicker, an auto-potion and macro automation tool for MU
-          Online and other MMORPGs, and MaxMacro, a macro-building and input-binding workspace for precise,
-          repeatable keyboard and mouse sequences. This site is the official place to learn about each
-          product and get official downloads and updates.
+          Maxie Apps is where I build MaxClicker and MaxMacro. MaxClicker handles auto-potion and macro
+          automation for MU Online and other MMORPGs, while MaxMacro is a macro-building workspace for
+          binding precise, repeatable keyboard and mouse sequences. This site is the official source for
+          both — real downloads, real updates, nothing else.
         </p>
       </section>
 
@@ -79,9 +79,10 @@ export function About() {
       <section className="about-note gv-fade-up">
         <h2>Official downloads</h2>
         <p>
-          MaxClicker and MaxMacro are distributed exclusively through this website and their GitHub release
-          pages — no third-party mirrors, no bundled installers. Updates are published the same way, so the{" "}
-          <Link to="/downloads">Downloads</Link> page always has the current version of both.
+          MaxClicker and MaxMacro are distributed only through this website and their GitHub release pages,
+          with our own Backblaze mirror as a backup host — no third-party downloads, no bundled installers.
+          Updates are published the same way, so the <Link to="/downloads">Downloads</Link> page always has
+          the current version of both.
         </p>
       </section>
 
